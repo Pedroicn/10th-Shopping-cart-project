@@ -12,20 +12,6 @@ const createCustomElement = (element, className, innerText) => {
   return e;
 };
 
-const createProductItemElement = ({ sku, name, image }) => {
-  const section = document.createElement('section');
-  section.className = 'item';
-
-  section.appendChild(createCustomElement('span', 'item__sku', sku));
-  section.appendChild(createCustomElement('span', 'item__title', name));
-  section.appendChild(createProductImageElement(image));
-  section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
-
-  return section;
-};
-
-const getSkuFromProductItem = (item) => item.querySelector('span.item__sku').innerText;
-
 const cartItemClickListener = (event) => {
   // coloque seu código aqui
 };
@@ -38,6 +24,34 @@ const createCartItemElement = ({ sku, name, salePrice }) => {
   return li;
 };
 
+const insertProductInCart = async (event) => {
+  const cartList = document.querySelector('.cart__items');
+  const parent = event.target.parentNode;
+  const productId = parent.firstChild.innerText;
+  const { id, title, price } = await fetchItem(productId);
+  const product = {
+    sku: id,
+    name: title,
+    salePrice: price,
+  };
+  cartList.appendChild(createCartItemElement(product));
+};
+
+const createProductItemElement = ({ sku, name, image }) => {
+  const section = document.createElement('section');
+  section.className = 'item';
+
+  section.appendChild(createCustomElement('span', 'item__sku', sku));
+  section.appendChild(createCustomElement('span', 'item__title', name));
+  section.appendChild(createProductImageElement(image));
+  const button = (createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
+  button.addEventListener('click', insertProductInCart);
+  section.appendChild(button);
+  return section;
+};
+
+const getSkuFromProductItem = (item) => item.querySelector('span.item__sku').innerText;
+
 const insertInformation = async () => {
   const items = document.querySelector('.items');
   const information = await fetchProducts('computador');
@@ -46,4 +60,5 @@ const insertInformation = async () => {
     items.appendChild(createProductItemElement({ sku: id, name: title, image: thumbnail }));
   });
 };
+
 window.onload = () => { insertInformation(); };
