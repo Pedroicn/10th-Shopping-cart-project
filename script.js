@@ -13,7 +13,7 @@ const createCustomElement = (element, className, innerText) => {
 };
 
 const cartItemClickListener = (event) => {
-  // coloque seu código aqui
+  event.target.remove()
 };
 
 const createCartItemElement = ({ sku, name, salePrice }) => {
