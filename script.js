@@ -70,13 +70,27 @@ const createProductItemElement = ({ sku, name, image }) => {
 
 const getSkuFromProductItem = (item) => item.querySelector('span.item__sku').innerText;
 
+const insertLoadMessage = () => {
+  const items = document.querySelector('.items');
+  const divMessage = document.createElement('div');
+  divMessage.classList.add('loading');
+  divMessage.innerText = 'Carregando...';
+  items.appendChild(divMessage);
+}
+
+const removeLoadMessage = () => {
+  const msg = document.querySelector('.loading');
+  msg.remove();
+}
 const insertInformation = async () => {
   const items = document.querySelector('.items');
+  insertLoadMessage()
   const information = await fetchProducts('computador');
   const results = await information.results;
   results.forEach(({ id, title, thumbnail }) => {
     items.appendChild(createProductItemElement({ sku: id, name: title, image: thumbnail }));
   });
+  removeLoadMessage()
 };
 
 buttonClear.addEventListener('click', () => {
