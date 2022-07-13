@@ -1,3 +1,5 @@
+// const saveCartItems = require("./helpers/saveCartItems");
+const cartList = document.querySelector('.cart__items');
 const createProductImageElement = (imageSource) => {
   const img = document.createElement('img');
   img.className = 'item__image';
@@ -14,7 +16,9 @@ const createCustomElement = (element, className, innerText) => {
 
 const cartItemClickListener = (event) => {
   event.target.remove();
+  saveCartItems(JSON.stringify(cartList.innerHTML));
 };
+cartList.addEventListener('click', cartItemClickListener);
 
 const createCartItemElement = ({ sku, name, salePrice }) => {
   const li = document.createElement('li');
@@ -25,7 +29,6 @@ const createCartItemElement = ({ sku, name, salePrice }) => {
 };
 
 const insertProductInCart = async (event) => {
-  const cartList = document.querySelector('.cart__items');
   const parent = event.target.parentNode;
   const productId = parent.firstChild.innerText;
   const { id, title, price } = await fetchItem(productId);
@@ -34,7 +37,10 @@ const insertProductInCart = async (event) => {
     name: title,
     salePrice: price,
   };
-  cartList.appendChild(createCartItemElement(product));
+  const li = createCartItemElement(product);
+  cartList.appendChild(li);
+
+  saveCartItems(JSON.stringify(cartList.innerHTML));
 };
 
 const createProductItemElement = ({ sku, name, image }) => {
@@ -61,4 +67,7 @@ const insertInformation = async () => {
   });
 };
 
-window.onload = () => { insertInformation(); };
+window.onload = () => {
+  insertInformation();
+  cartList.innerHTML = getSavedCartItems('cartItems');
+};
