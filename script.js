@@ -1,6 +1,8 @@
 // const saveCartItems = require("./helpers/saveCartItems");
 const cartList = document.querySelector('.cart__items');
 const buttonClear = document.querySelector('.empty-cart');
+const input = document.querySelector('#searchInput');
+const searchButton = document.querySelector('#searchButton');
 const createProductImageElement = (imageSource) => {
   const img = document.createElement('img');
   img.className = 'item__image';
@@ -43,14 +45,18 @@ const createCartItemElement = ({ sku, name, salePrice }) => {
 const insertProductInCart = async (event) => {
   const parent = event.target.parentNode;
   const productId = parent.firstChild.innerText;
-  const { id, title, price } = await fetchItem(productId);
+  const img = document.createElement('img');
+  const { id, title, price, thumbnail } = await fetchItem(productId);
   const product = {
     sku: id,
     name: title,
     salePrice: price,
   };
+  img.src = thumbnail;
   const li = createCartItemElement(product);
+  li.appendChild(img);
   cartList.appendChild(li);
+  
   saveCartItems(JSON.stringify(cartList.innerHTML));
   sumPrices();
 };
@@ -82,16 +88,31 @@ const removeLoadMessage = () => {
   const msg = document.querySelector('.loading');
   msg.remove();
 };
+
 const insertInformation = async () => {
   const items = document.querySelector('.items');
-  insertLoadMessage();
-  const information = await fetchProducts('computador');
+  const product = 'computador';
+  insertLoadMessage(); 
+  const information = await fetchProducts(product);
   const results = await information.results;
   results.forEach(({ id, title, thumbnail }) => {
     items.appendChild(createProductItemElement({ sku: id, name: title, image: thumbnail }));
   });
   removeLoadMessage();
 };
+
+const insertNewProducts = async () => {
+  const items = document.querySelector('.items');  
+  if (input.value) {
+    const information = await fetchProducts(input.value);
+    const results = await information.results;
+    items.innerHTML = '';
+    results.forEach(({ id, title, thumbnail }) => {
+    items.appendChild(createProductItemElement({ sku: id, name: title, image: thumbnail }));
+  });
+  }
+};
+searchButton.addEventListener('click', insertNewProducts);
 
 buttonClear.addEventListener('click', () => {
   const totalHTML = document.querySelector('.total-price');

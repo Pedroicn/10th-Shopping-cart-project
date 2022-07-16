@@ -6,7 +6,38 @@
 }
 
 body {
-  background-color: rgb(246, 246, 246);
+  background-color: rgb(247, 248, 248);
+}
+
+#searchButton {
+  height: 23px;
+  box-shadow: 2px 2px blue;
+  background-color: rgb(50, 184, 104);
+  font-weight: 700;
+}
+
+#searchInput {
+  height: 25px;
+  width: 300px;
+  border-radius: 10%;
+  box-shadow: 2px 2px rgb(16, 121, 70);
+}
+
+#buscaProduto {
+  margin-top: 30px;
+  margin-left: 70px;
+}
+
+.cart__item {
+  display: flex;
+  margin-top: 20px;
+  flex-direction: row-reverse;
+  border: 2px solid black;
+}
+
+.cart__item img {
+  width: 100px;
+  height: 100px;
 }
 
 .header {
@@ -97,7 +128,7 @@ body {
   height: auto;
   margin: 5px;
   width: 200px;
-  border: 2px solid rgb(234, 234, 233);
+  border: 3px solid rgb(11, 11, 3);
   border-radius: 5px;
   box-sizing: border-box;
 }
