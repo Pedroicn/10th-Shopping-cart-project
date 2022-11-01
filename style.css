@@ -10,10 +10,10 @@ body {
 }
 
 #searchButton {
-  height: 23px;
-  box-shadow: 2px 2px blue;
-  background-color: rgb(50, 184, 104);
-  font-weight: 700;
+  background-color: rgb(138, 211, 138);
+  height: 25px;
+  border-radius: 5px;
+  box-shadow: 2px 2px rgb(16, 121, 70);
 }
 
 #searchInput {
